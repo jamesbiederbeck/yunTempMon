@@ -130,7 +130,11 @@ def monitor(host, interval,key):
         iterations+=1
         try:
             temp = getMeasurement(host)
-            upload("yuntemp",key, "Temperature",str(temp)+"°F")
+            if args.fahrenheit:
+                unit='°F'
+            else:
+                unit='°C'
+            upload("yuntemp",key, "Temperature",str(temp)+unit)
             successful_iterations +=1
                 
             #now wait until next time
@@ -161,7 +165,11 @@ def main(host="http://arduino.local"):
             interval = args.interval
         monitor(host, interval,key)
     else: 
-        print(str(getMeasurement(host))+"°F")
+        if args.fahrenheit:
+            unit='°F'
+        else:
+            unit='°C'
+        print(str(getMeasurement(host))+unit)
     
 if __name__ == "__main__":
         main()
