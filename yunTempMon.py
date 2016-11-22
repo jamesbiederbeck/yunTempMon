@@ -33,6 +33,11 @@ parser.add_argument(
         )
 
 parser.add_argument(
+        '-y', '--upload-yun', help="Post result to yun Datastore",
+        action='store_true',dest="uploadyun" #store result there
+        )                                 #(ie args.uploadyun)
+
+parser.add_argument(
         '-f','--fahrenheit', help="Output Fahrenheit", 
         action='store_true'
         )
@@ -102,6 +107,13 @@ def upload(eventname, ifttt_key, value1='', value2='', value3=''):
     data = {"value1": value1, "value2":value2, "value3":value3}
     r =requests.post(url,data)
     return r
+
+def uploadYunData(host, key,value):
+    url = host+"/data/put/"+key+"/"+str(value)
+    r = requests.get(url)
+    if args.verbose:
+        print(r)
+        print("Arduino",host+": Key",key,"set to",value)
     
 def getKey():
     #get key from user, one way or another
@@ -134,7 +146,12 @@ def monitor(host, interval,key):
                 unit='°F'
             else:
                 unit='°C'
-            upload("yuntemp",key, "Temperature",str(temp)+unit)
+            if args.upload:
+                upload("yuntemp",key, "Temperature",str(temp)+unit)
+            if args.uploadyun:
+                uploadYunData(host,"temp",temp)
+            else: #user isn't uploading, so just print the data
+                print(time.strftime("%Y-%m-%d %H:%M:%S")+"\t"+temp)
             successful_iterations +=1
                 
             #now wait until next time
@@ -172,4 +189,6 @@ def main(host="http://arduino.local"):
         print(str(getMeasurement(host))+unit)
     
 if __name__ == "__main__":
+        if args.verbose:
+            print(args)
         main()
