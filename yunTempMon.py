@@ -143,9 +143,9 @@ def monitor(host, interval,key):
         try:
             temp = getMeasurement(host)
             if args.fahrenheit:
-                unit='°F'
+                unit='F'
             else:
-                unit='°C'
+                unit='C'
             if args.upload:
                 upload("yuntemp",key, "Temperature",str(temp)+unit)
             if args.uploadyun:
@@ -183,9 +183,9 @@ def main(host="http://arduino.local"):
         monitor(host, interval,key)
     else: 
         if args.fahrenheit:
-            unit='°F'
+            unit='F'
         else:
-            unit='°C'
+            unit='C'
         print(str(getMeasurement(host))+unit)
     
 if __name__ == "__main__":
