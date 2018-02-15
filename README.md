@@ -13,4 +13,4 @@ Sorry about that url.
 
 The script's only real dependency is requests, but that might as well be a core library at this point.
 
-I'll probably regret this later, but feel free to email me if you have any questions.
+Feel free to email me if you have any questions.
